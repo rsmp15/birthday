@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Happy Birthday Thraveen ❤️ | Access Our World</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/animations.css" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <!-- Ambient Particle Canvas (Bokeh Hearts, Confetti, Fireworks) -->
+  <canvas id="particlesCanvas"></canvas>
+
+  <!-- Top Floating Controls -->
+  <header class="top-nav">
+    <button id="musicToggle" class="music-toggle" title="Play Romantic Music" aria-label="Toggle Music">
+      <span class="music-icon">🎵</span>
+      <div class="music-bars">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </button>
+  </header>
+
+  <!-- Main Application Container -->
+  <main id="app">
+
+    <!-- ========================================================
+         SCREEN 1: ACCESS OUR WORLD (PASSCODE LOCK)
+         ======================================================== -->
+    <section id="screen1" class="screen active">
+      <div class="lock-icon-wrapper">
+        <!-- Pink Neon Padlock with Heart Cutout -->
+        <svg id="padlockIcon" class="padlock-svg" viewBox="0 0 100 100">
+          <defs>
+            <linearGradient id="padlockGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#ff7597" />
+              <stop offset="100%" stop-color="#ff2a6d" />
+            </linearGradient>
+            <filter id="padlockGlow" x="-20%" y="-20%" width="140%" height="140%">
+              <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#ff2a6d" flood-opacity="0.8"/>
+            </filter>
+          </defs>
+          <!-- Shackle -->
+          <path class="shackle" d="M32 45 V30 A18 18 0 0 1 68 30 V45" fill="none" stroke="url(#padlockGrad)" stroke-width="8" stroke-linecap="round" />
+          <!-- Body -->
+          <rect x="22" y="42" width="56" height="46" rx="14" fill="url(#padlockGrad)" filter="url(#padlockGlow)" />
+          <!-- Heart Keyhole Cutout -->
+          <path d="M50 72 C50 72 40 64 40 57 C40 52.5 43.5 49 47 49 C48.5 49 50 50.5 50 50.5 C50 50.5 51.5 49 53 49 C56.5 49 60 52.5 60 57 C60 64 50 72 50 72 Z" fill="#ffffff" opacity="0.9" />
+        </svg>
+      </div>
+
+      <h1 class="screen-title">Access Our World</h1>
+      <p class="screen-subtitle">A special place, just for you ❤️</p>
+
+      <div id="lockCard" class="lock-card">
+        <!-- Name Input -->
+        <div class="input-group">
+          <span class="input-icon">👤</span>
+          <input type="text" id="usernameInput" value="Thraveen" placeholder="Enter your name" />
+        </div>
+
+        <!-- Passcode Input -->
+        <div class="input-group">
+          <span class="input-icon">🔒</span>
+          <input type="password" id="passcodeInput" value="2208" placeholder="Passcode (2208)" />
+          <button id="eyeToggle" class="eye-btn" type="button" aria-label="Toggle password visibility">👁</button>
+        </div>
+
+        <div id="passcodeHint" class="passcode-hint">Hint: Birthday Date (22 August) ❤️</div>
+
+        <!-- Unlock Button -->
+        <button id="unlockBtn" class="btn-primary">Unlock Surprise 💖</button>
+      </div>
+
+      <div class="lock-footer">❤️ Made with Love by Kamali ❤️</div>
+    </section>
+
+    <!-- ========================================================
+         SCREEN 2: HAPPY BIRTHDAY GREETING & CONFETTI
+         ======================================================== -->
+    <section id="screen2" class="screen">
+      <div class="birthday-header">
+        <h2 class="happy-title">Happy</h2>
+        <div class="birthday-script">Birthday</div>
+        <div class="recipient-row">
+          <span class="recipient-name">Thraveen</span>
+          <svg class="neon-heart-icon" viewBox="0 0 24 24">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="birthday-date-badge">
+        <span>❤️</span>
+        <span>22 August</span>
+        <span>❤️</span>
+      </div>
+
+      <p class="birthday-message">
+        Today is all about you and all the happiness you bring into my life every single day.
+      </p>
+
+      <button id="unfoldLoveBtn" class="btn-primary" style="max-width: 200px;">Unfold Love 💖</button>
+    </section>
+
+    <!-- ========================================================
+         SCREEN 3: OUR PRECIOUS MEMORIES (POLAROID GALLERY)
+         ======================================================== -->
+    <section id="screen3" class="screen">
+      <h2 class="memories-title">✨ Our Precious Memories ✨</h2>
+      <p class="memories-subtitle">Moments that mean everything</p>
+
+      <!-- Polaroid Cards Container -->
+      <div id="polaroidGallery" class="polaroid-gallery">
+        <!-- Dynamically populated from config.memories -->
+      </div>
+
+      <button id="playMovieBtn" class="btn-primary" style="max-width: 220px;">Play My Movie 🎬</button>
+    </section>
+
+    <!-- ========================================================
+         SCREEN 4: OUR SPECIAL VIDEO
+         ======================================================== -->
+    <section id="screen4" class="screen">
+      <h2 class="video-screen-title">💕 Our Special Video 💕</h2>
+
+      <div class="video-player-card">
+        <div id="videoContainer" class="video-container">
+          <video id="specialVideo" preload="metadata" poster="assets/extracted/video_preview.png" playsinline loop>
+            <source src="https://assets.mixkit.co/videos/preview/mixkit-silhouette-of-a-couple-at-sunset-40294-large.mp4" type="video/mp4" />
+          </video>
+          <div id="videoPlayOverlay" class="video-overlay-play">▶</div>
+        </div>
+
+        <!-- Romantic Custom Controls -->
+        <div class="video-controls">
+          <button id="videoToggleBtn" class="video-btn" aria-label="Play/Pause">▶</button>
+          <div id="videoTime" class="video-time">00:00 / 02:45</div>
+          <div id="videoProgressBar" class="video-progress-bar">
+            <div id="videoProgressFilled" class="video-progress-filled"></div>
+          </div>
+          <button id="videoFullscreenBtn" class="video-btn" aria-label="Full Screen">⛶</button>
+        </div>
+      </div>
+
+      <button id="finalSurpriseBtn" class="btn-primary" style="max-width: 210px;">Final Surprise 💖</button>
+    </section>
+
+    <!-- ========================================================
+         SCREEN 5: A LETTER FROM KAMALI
+         ======================================================== -->
+    <section id="screen5" class="screen">
+      <h2 class="letter-screen-title">💕 A Letter From Kamali 💕</h2>
+      <p class="letter-screen-subtitle">Written with all my heart</p>
+
+      <div class="letter-parchment-card">
+        <span class="letter-ornament-tl">❦</span>
+        <span class="letter-ornament-tr">❦</span>
+
+        <div class="letter-content">
+          <div class="letter-salutation">To the most amazing person in my life,</div>
+          <div class="letter-name">Thraveen,</div>
+          <div class="letter-body">
+            <p>You make every day brighter just by being you.</p>
+            <p>Thank you for your love, your kindness and for being my constant happiness.</p>
+            <p>I am so lucky to have you in my life.</p>
+            <p>I hope this birthday brings you as much joy as you bring into mine.</p>
+          </div>
+          <div class="letter-birthday-wish">Happy Birthday, my love! ❤️</div>
+          <div class="letter-closing">Forever yours,</div>
+          <div class="letter-author">Kamali</div>
+        </div>
+
+        <!-- Glowing Pink Envelope on bottom-left -->
+        <div class="envelope-decoration">
+          <svg viewBox="0 0 100 100" width="100%" height="100%">
+            <defs>
+              <linearGradient id="envGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#ff7597" />
+                <stop offset="100%" stop-color="#d81b60" />
+              </linearGradient>
+            </defs>
+            <rect x="10" y="25" width="80" height="55" rx="6" fill="rgba(40,10,25,0.7)" stroke="url(#envGrad)" stroke-width="3" />
+            <path d="M10 25 L50 55 L90 25" fill="none" stroke="url(#envGrad)" stroke-width="2.5" />
+            <circle cx="50" cy="55" r="7" fill="#ff2a6d" />
+            <path d="M50 58 C50 58 46 54 46 52 C46 50 48 49 50 51 C52 49 54 50 54 52 C54 54 50 58 50 58 Z" fill="#ffffff" />
+          </svg>
+        </div>
+
+        <!-- Glowing Pink Quill on bottom-right -->
+        <div class="quill-decoration">
+          <svg viewBox="0 0 100 100" width="100%" height="100%">
+            <defs>
+              <linearGradient id="quillGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#ff9ebb" />
+                <stop offset="100%" stop-color="#ff2a6d" />
+              </linearGradient>
+            </defs>
+            <path d="M85 10 C70 20 40 45 25 75 C24 77 22 84 20 88 C24 85 30 83 33 81 C48 65 75 35 85 10 Z" fill="none" stroke="url(#quillGrad)" stroke-width="3" stroke-linecap="round"/>
+            <path d="M75 22 C65 26 55 35 48 42" stroke="url(#quillGrad)" stroke-width="2" stroke-linecap="round"/>
+            <path d="M65 34 C58 38 50 46 44 52" stroke="url(#quillGrad)" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="20" cy="88" r="3" fill="#ff4b82" />
+          </svg>
+        </div>
+      </div>
+
+      <button id="toScreen6Btn" class="btn-primary" style="max-width: 250px;">Make A Wish & Cut Cake 🎂✨</button>
+    </section>
+
+    <!-- ========================================================
+         SCREEN 6: GRAND FINALE - CAKE, CANDLE & FIREWORKS
+         ======================================================== -->
+    <section id="screen6" class="screen">
+      <div class="finale-header">
+        <h2 class="finale-title">Happy Birthday,</h2>
+        <div class="finale-name-row">
+          <span class="finale-name">Thraveen</span>
+          <svg class="neon-heart-icon" viewBox="0 0 24 24">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Stage with Cake & Metallic Balloons -->
+      <div class="cake-stage">
+        <!-- Floating Left Balloon -->
+        <div class="balloon-left">
+          <svg viewBox="0 0 100 120" width="100%">
+            <defs>
+              <radialGradient id="balloonGrad" cx="35%" cy="30%" r="70%">
+                <stop offset="0%" stop-color="#ff9ebb" />
+                <stop offset="40%" stop-color="#ff2a6d" />
+                <stop offset="100%" stop-color="#800b30" />
+              </radialGradient>
+            </defs>
+            <path d="M50 90 C50 90 10 65 10 35 C10 15 25 5 45 5 C50 5 50 12 50 12 C50 12 50 5 55 5 C75 5 90 15 90 35 C90 65 50 90 50 90 Z" fill="url(#balloonGrad)" />
+            <ellipse cx="38" cy="24" rx="10" ry="5" fill="#ffffff" opacity="0.6" transform="rotate(-30 38 24)" />
+            <!-- String -->
+            <path d="M50 90 Q48 105 52 120" fill="none" stroke="rgba(255, 120, 160, 0.6)" stroke-width="1.5" />
+          </svg>
+        </div>
+
+        <!-- Floating Right Balloon -->
+        <div class="balloon-right">
+          <svg viewBox="0 0 100 120" width="100%">
+            <path d="M50 90 C50 90 10 65 10 35 C10 15 25 5 45 5 C50 5 50 12 50 12 C50 12 50 5 55 5 C75 5 90 15 90 35 C90 65 50 90 50 90 Z" fill="url(#balloonGrad)" />
+            <ellipse cx="38" cy="24" rx="10" ry="5" fill="#ffffff" opacity="0.6" transform="rotate(-30 38 24)" />
+            <path d="M50 90 Q52 105 48 120" fill="none" stroke="rgba(255, 120, 160, 0.6)" stroke-width="1.5" />
+          </svg>
+        </div>
+
+        <!-- Cake & Interactive Candle -->
+        <div id="cakeContainer" class="cake-container" title="Click to blow out the candle and make a wish!">
+          <div id="candleUnit" class="candle-unit">
+            <div id="candleFlame" class="candle-flame"></div>
+            <div class="candle-stick"></div>
+          </div>
+          <img src="assets/extracted/cake_only.png" alt="Birthday Cake" class="cake-img" onerror="this.onerror=null; this.src='assets/extracted/cake_clean.png';" />
+          <div id="candleHint" class="candle-hint">Tap candle to make a wish & blow it out! 🕯️✨</div>
+        </div>
+      </div>
+
+      <!-- Finale Sentimental Card -->
+      <div class="finale-card">
+        <p class="finale-card-text">Thank you for being my happiness,
+my love and my everything.
+Forever yours, Kamali ❤️</p>
+      </div>
+
+      <!-- 4 Interactive Category Tokens with Neon Glow -->
+      <div class="finale-actions">
+        <button id="btnStory" class="action-card-btn" title="Our Story">
+          <svg class="action-svg" viewBox="0 0 24 24" width="26" height="26">
+            <path fill="none" stroke="#ff2a6d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            <rect x="9" y="8" width="6" height="5" rx="1" fill="#ff7597" />
+          </svg>
+          <span class="action-label">Our Story</span>
+        </button>
+        <button id="btnLove" class="action-card-btn" title="Our Love">
+          <svg class="action-svg" viewBox="0 0 24 24" width="26" height="26">
+            <path fill="none" stroke="#ff4b82" stroke-width="2" stroke-linecap="round" d="M12 4 C10 1, 6 2, 6 5 C6 9, 12 13, 12 13 C12 13, 18 9, 18 5 C18 2, 14 1, 12 4 Z"/>
+            <path d="M12 13 V21" stroke="#ff4b82" stroke-width="2" stroke-linecap="round" />
+            <path d="M12 16 Q15 15 16 17" fill="none" stroke="#ff7597" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+          <span class="action-label">Our Love</span>
+        </button>
+        <button id="btnForever" class="action-card-btn" title="Forever Us">
+          <svg class="action-svg" viewBox="0 0 24 24" width="26" height="26">
+            <path fill="none" stroke="#ff2a6d" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="M18.178 8c5.096 0 5.096 8 0 8-5.095 0-7.262-8-12.356-8-5.096 0-5.096 8 0 8 5.094 0 7.261-8 12.356-8z"/>
+          </svg>
+          <span class="action-label">Forever Us</span>
+        </button>
+        <button id="btnAlways" class="action-card-btn" title="Always">
+          <svg class="action-svg" viewBox="0 0 24 24" width="26" height="26">
+            <path fill="none" stroke="#ff4b82" stroke-width="2" stroke-linecap="round" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            <path d="M12 5 L12 11 M9 8 L15 8" stroke="#ffd166" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <span class="action-label">Always</span>
+        </button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Bottom Step Indicators -->
+  <footer class="step-indicator">
+    <div class="step-dot active" data-step="1" title="Lock Screen"></div>
+    <div class="step-dot" data-step="2" title="Birthday Wish"></div>
+    <div class="step-dot" data-step="3" title="Our Memories"></div>
+    <div class="step-dot" data-step="4" title="Special Video"></div>
+    <div class="step-dot" data-step="5" title="Love Letter"></div>
+    <div class="step-dot" data-step="6" title="Cake & Celebration"></div>
+  </footer>
+
+  <!-- Lightbox Modal for Polaroids -->
+  <div id="lightboxModal" class="modal-overlay">
+    <div class="lightbox-card">
+      <button class="modal-close-btn" aria-label="Close">×</button>
+      <div class="lightbox-img-wrap">
+        <img id="lightboxImg" src="" alt="Memory Photo" />
+      </div>
+      <div id="lightboxCaption" class="lightbox-caption"></div>
+      <div id="lightboxDate" class="lightbox-date"></div>
+      <div id="lightboxNote" class="lightbox-note"></div>
+    </div>
+  </div>
+
+  <!-- Info Modal for Category Tokens (Story, Love, Forever, Always) -->
+  <div id="infoModal" class="modal-overlay">
+    <div class="modal-container">
+      <button class="modal-close-btn" aria-label="Close">×</button>
+      <h3 id="infoModalTitle" class="modal-title"></h3>
+      <div id="infoModalBody" class="modal-body"></div>
+    </div>
+  </div>
+
+  <!-- JavaScript Bundle -->
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

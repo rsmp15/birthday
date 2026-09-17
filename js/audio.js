@@ -216,4 +216,96 @@ export class SoundManager {
     this.ensureContext();
     this.playChimeNote(784, 0.15, 0.04);
   }
+
+  // Sound effect: Pop-able love bubble pop
+  playBubblePopSound() {
+    this.ensureContext();
+    if (!this.audioContext) return;
+    try {
+      const now = this.audioContext.currentTime;
+      const osc = this.audioContext.createOscillator();
+      const gain = this.audioContext.createGain();
+
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(600 + Math.random() * 200, now);
+      osc.frequency.exponentialRampToValueAtTime(1200 + Math.random() * 300, now + 0.06);
+
+      gain.gain.setValueAtTime(0.09, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+
+      osc.connect(gain);
+      gain.connect(this.audioContext.destination);
+
+      osc.start(now);
+      osc.stop(now + 0.08);
+    } catch (e) {}
+  }
+
+  // Sound effect: Sparkle heart burst (on click)
+  playSparkleBurstSound() {
+    this.ensureContext();
+    if (!this.audioContext) return;
+    const baseFreq = 880 + Math.random() * 300;
+    const notes = [baseFreq, baseFreq * 1.25, baseFreq * 1.5];
+    notes.forEach((freq, idx) => {
+      setTimeout(() => {
+        this.playChimeNote(freq, 0.35, 0.035);
+      }, idx * 45);
+    });
+  }
+
+  // Sound effect: Balloon pop
+  playBalloonPopSound() {
+    this.ensureContext();
+    if (!this.audioContext) return;
+    try {
+      const now = this.audioContext.currentTime;
+      const bufferSize = this.audioContext.sampleRate * 0.15;
+      const buffer = this.audioContext.createBuffer(1, bufferSize, this.audioContext.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufferSize * 0.2));
+      }
+      const noise = this.audioContext.createBufferSource();
+      noise.buffer = buffer;
+
+      const gain = this.audioContext.createGain();
+      gain.gain.setValueAtTime(0.3, now);
+      gain.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
+
+      noise.connect(gain);
+      gain.connect(this.audioContext.destination);
+      noise.start(now);
+
+      // Add high celebratory sparkle
+      setTimeout(() => {
+        this.playSparkleBurstSound();
+      }, 50);
+    } catch (e) {}
+  }
+
+  // Sound effect: Paper unfold
+  playPaperUnfoldSound() {
+    this.ensureContext();
+    if (!this.audioContext) return;
+    try {
+      const now = this.audioContext.currentTime;
+      const osc = this.audioContext.createOscillator();
+      const gain = this.audioContext.createGain();
+
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(320, now);
+      osc.frequency.linearRampToValueAtTime(540, now + 0.15);
+
+      gain.gain.setValueAtTime(0, now);
+      gain.gain.linearRampToValueAtTime(0.07, now + 0.03);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+
+      osc.connect(gain);
+      gain.connect(this.audioContext.destination);
+
+      osc.start(now);
+      osc.stop(now + 0.25);
+    } catch (e) {}
+  }
 }

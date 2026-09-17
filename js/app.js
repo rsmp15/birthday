@@ -18,6 +18,9 @@ class BirthdayApp {
 
   init() {
     this.bindGlobalEvents();
+    this.initMagneticButtons();
+    this.initCardTilt();
+    this.initInteractiveBalloons();
     this.initScreen1();
     this.initScreen2();
     this.initScreen3();
@@ -27,7 +30,7 @@ class BirthdayApp {
     this.updateScreen(1);
   }
 
-  // Bind top nav and step indicators
+  // Bind top nav, step indicators, and global click bursts / bubble pop
   bindGlobalEvents() {
     const musicBtn = document.getElementById('musicToggle');
     if (musicBtn) {
@@ -45,6 +48,105 @@ class BirthdayApp {
           this.sound.playClickSound();
           this.updateScreen(targetScreen);
         }
+      });
+    });
+
+    // Global click/tap listener: check love bubble pop or trigger sparkle burst
+    window.addEventListener('click', (e) => {
+      // Check if clicked a love bubble
+      const popped = this.particles.checkBubblePop(e.clientX, e.clientY, (b) => {
+        this.sound.playBubblePopSound();
+      });
+      if (popped) return;
+
+      // If clicked background / non-interactive element, trigger romantic sparkle burst
+      const isInteractive = e.target.closest('button, input, a, .mode-tab-btn, .action-card-btn, .polaroid-card-item, .balloon-left, .balloon-right, .balloon-screen2-left, .balloon-screen2-right, .envelope-decoration, .quill-decoration, .cake-container');
+      if (!isInteractive) {
+        this.particles.triggerClickBurst(e.clientX, e.clientY);
+        this.sound.playSparkleBurstSound();
+      }
+    });
+  }
+
+  // Magnetic pull effect on buttons + click ripple
+  initMagneticButtons() {
+    const buttons = document.querySelectorAll('.btn-primary, .mode-tab-btn, .action-card-btn, .music-toggle');
+    buttons.forEach(btn => {
+      btn.addEventListener('mousemove', (e) => {
+        const rect = btn.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        const deltaX = (e.clientX - centerX) * 0.18;
+        const deltaY = (e.clientY - centerY) * 0.18;
+        btn.style.transform = `translate(${deltaX}px, ${deltaY}px) scale(1.02)`;
+      });
+
+      btn.addEventListener('mouseleave', () => {
+        btn.style.transform = '';
+      });
+
+      btn.addEventListener('click', (e) => {
+        const rect = btn.getBoundingClientRect();
+        const ripple = document.createElement('span');
+        ripple.className = 'btn-ripple';
+        const diameter = Math.max(rect.width, rect.height) * 1.5;
+        ripple.style.width = ripple.style.height = `${diameter}px`;
+        ripple.style.left = `${e.clientX - rect.left}px`;
+        ripple.style.top = `${e.clientY - rect.top}px`;
+        btn.appendChild(ripple);
+        setTimeout(() => ripple.remove(), 600);
+      });
+    });
+  }
+
+  // 3D Perspective Mouse Tilt Physics on Cards
+  initCardTilt() {
+    const cards = document.querySelectorAll('.card-tilt-target');
+    cards.forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        const rotateX = -((y - centerY) / centerY) * 7;
+        const rotateY = ((x - centerX) / centerX) * 7;
+
+        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.01)`;
+        card.style.setProperty('--mouse-x', `${(x / rect.width) * 100}%`);
+        card.style.setProperty('--mouse-y', `${(y / rect.height) * 100}%`);
+      });
+
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)';
+      });
+    });
+  }
+
+  // Interactive Pop-able Metallic Balloons
+  initInteractiveBalloons() {
+    const balloonIds = ['balloonS2Left', 'balloonS2Right', 'balloonS5Left', 'balloonS5Right'];
+    balloonIds.forEach(id => {
+      const b = document.getElementById(id);
+      if (!b) return;
+
+      b.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.sound.playBalloonPopSound();
+        const rect = b.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+
+        // Trigger confetti and heart burst at balloon location
+        this.particles.triggerClickBurst(centerX, centerY);
+        this.particles.triggerBubblePop(centerX, centerY, 30);
+
+        b.classList.add('balloon-popped');
+
+        // Respawn after 4 seconds
+        setTimeout(() => {
+          b.classList.remove('balloon-popped');
+        }, 4000);
       });
     });
   }
@@ -89,8 +191,12 @@ class BirthdayApp {
       }, 100);
     }
 
-    if (step === 5 && this.candleBlown) {
-      this.particles.triggerFireworks();
+    if (step === 5) {
+      if (this.candleBlown) {
+        this.particles.startContinuousCelebration();
+      }
+    } else {
+      this.particles.stopContinuousCelebration();
     }
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -111,6 +217,18 @@ class BirthdayApp {
       passHint.textContent = this.config.passcodeHint;
     }
 
+    // Padlock hover heartbeat pulse
+    if (padlock) {
+      padlock.addEventListener('mouseenter', () => {
+        padlock.style.animation = 'padlockHeartbeat 1.4s infinite ease-in-out';
+      });
+      padlock.addEventListener('mouseleave', () => {
+        if (!padlock.classList.contains('unlocking')) {
+          padlock.style.animation = '';
+        }
+      });
+    }
+
     if (eyeToggle && passInput) {
       eyeToggle.addEventListener('click', () => {
         if (passInput.type === 'password') {
@@ -129,7 +247,11 @@ class BirthdayApp {
 
       // Allow if matches or if empty with gentle unlock
       if (validPasscodes.includes(entered.toLowerCase()) || entered === '') {
-        if (padlock) padlock.classList.add('unlocking');
+        if (padlock) {
+          padlock.classList.add('unlocking');
+          const rect = padlock.getBoundingClientRect();
+          this.particles.triggerClickBurst(rect.left + rect.width / 2, rect.top + rect.height / 2);
+        }
         this.sound.playUnlockSound();
 
         if (this.config.music.autoplayOnUnlock) {
@@ -212,7 +334,7 @@ class BirthdayApp {
       polaroidGallery.innerHTML = '';
       this.config.memories.forEach((mem) => {
         const card = document.createElement('div');
-        card.className = 'polaroid-card-item';
+        card.className = 'polaroid-card-item card-tilt-target';
         card.style.transform = `rotate(${mem.rotation || 0}deg)`;
         card.setAttribute('title', `Click to view: ${mem.caption}`);
 
@@ -280,6 +402,35 @@ class BirthdayApp {
   // ==========================================
   initScreen4() {
     const toScreen5Btn = document.getElementById('toScreen5Btn');
+    const envelope = document.getElementById('envelopeDecor');
+    const quill = document.getElementById('quillDecor');
+    const letterCard = document.getElementById('letterCard');
+
+    // Clicking envelope re-triggers unfolding animation with paper sound
+    if (envelope && letterCard) {
+      envelope.addEventListener('click', () => {
+        this.sound.playPaperUnfoldSound();
+        const rect = envelope.getBoundingClientRect();
+        this.particles.triggerClickBurst(rect.left + rect.width / 2, rect.top + rect.height / 2);
+
+        letterCard.style.animation = 'none';
+        void letterCard.offsetWidth; // trigger reflow
+        letterCard.style.animation = 'letterUnfold3D 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards';
+      });
+    }
+
+    // Quill interactive motion on letter hover
+    if (quill && letterCard) {
+      letterCard.addEventListener('mousemove', (e) => {
+        const rect = letterCard.getBoundingClientRect();
+        const relX = (e.clientX - rect.left) / rect.width;
+        quill.style.transform = `rotate(${(relX - 0.5) * 20}deg) scale(1.08)`;
+      });
+      letterCard.addEventListener('mouseleave', () => {
+        quill.style.transform = '';
+      });
+    }
+
     if (toScreen5Btn) {
       toScreen5Btn.addEventListener('click', () => {
         this.sound.playClickSound();
@@ -320,9 +471,10 @@ class BirthdayApp {
         this.sound.playFireworksSound();
       }, 400);
 
-      // Trigger spectacular fireworks
+      // Trigger spectacular multi-stage fireworks and continuous celebration
       setTimeout(() => {
-        this.particles.triggerFireworks(window.innerWidth / 2, window.innerHeight * 0.35, 7);
+        this.particles.triggerFireworks(window.innerWidth / 2, window.innerHeight * 0.35, 8);
+        this.particles.startContinuousCelebration();
       }, 300);
     };
 
@@ -419,10 +571,11 @@ class BirthdayApp {
           replayBtn.addEventListener('click', () => {
             if (modal) modal.classList.remove('active');
             this.candleBlown = false;
+            this.particles.stopContinuousCelebration();
             const flame = document.getElementById('candleFlame');
             if (flame) flame.classList.remove('blown-out');
             const hint = document.getElementById('candleHint');
-            if (hint) hint.textContent = 'Tap the candle to make a wish & blow it out! 🕯️✨';
+            if (hint) hint.textContent = 'Tap candle to make a wish & blow it out! 🕯️✨';
             this.updateScreen(1);
           });
         }

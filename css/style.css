@@ -304,12 +304,12 @@ html, body {
   padding-left: 4px;
 }
 
-/* Primary Gradient Button */
+/* Primary Gradient Button with Neon Flow and Magnetic Feel */
 .btn-primary {
   width: 100%;
   height: 48px;
   background: linear-gradient(135deg, #ff2a6d 0%, #d81b60 100%);
-  border: none;
+  border: 1px solid rgba(255, 200, 220, 0.4);
   border-radius: 25px;
   color: #ffffff;
   font-size: 0.98rem;
@@ -320,18 +320,72 @@ html, body {
   align-items: center;
   justify-content: center;
   gap: 8px;
+  position: relative;
+  overflow: hidden;
   box-shadow: 0 4px 18px rgba(255, 42, 109, 0.45);
-  transition: all 0.3s ease;
+  animation: buttonGlowFlow 3.5s infinite ease-in-out;
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.25s ease, background 0.3s ease;
+  will-change: transform;
+}
+
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: 0.5s;
+  pointer-events: none;
+}
+
+.btn-primary:hover::before {
+  left: 100%;
 }
 
 .btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 25px rgba(255, 42, 109, 0.7);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 8px 30px rgba(255, 42, 109, 0.85), 0 0 25px rgba(255, 120, 180, 0.6);
   background: linear-gradient(135deg, #ff4b82 0%, #e91e63 100%);
 }
 
 .btn-primary:active {
-  transform: translateY(1px);
+  transform: translateY(1px) scale(0.96);
+  transition: transform 0.08s ease;
+}
+
+/* Button Click Ripple */
+.btn-ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.65);
+  pointer-events: none;
+  animation: rippleSpread 0.55s ease-out forwards;
+}
+
+/* 3D Perspective Mouse Tilt Target */
+.card-tilt-target {
+  transition: transform 0.18s cubic-bezier(0.1, 0.9, 0.2, 1), box-shadow 0.3s ease;
+  transform-style: preserve-3d;
+  will-change: transform;
+  position: relative;
+}
+
+.card-tilt-target::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  border-radius: inherit;
+  background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.15) 0%, transparent 65%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 5;
+}
+
+.card-tilt-target:hover::after {
+  opacity: 1;
 }
 
 .lock-footer {
@@ -484,20 +538,43 @@ html, body {
 }
 
 .polaroid-card-item:hover {
-  transform: translateY(-12px) scale(1.1) rotate(0deg) !important;
+  transform: translateY(-14px) scale(1.12) rotate(0deg) !important;
   z-index: 30;
 }
 
+.polaroid-card-item:hover .polaroid-pin,
+.polaroid-card-item:hover .pin-heart {
+  animation: pinWiggle 0.5s ease-in-out;
+}
+
 .polaroid-wrapper {
+  position: relative;
   width: 100%;
   border-radius: 4px;
-  overflow: visible;
+  overflow: hidden;
   filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.7));
-  transition: filter 0.35s ease;
+  transition: filter 0.35s ease, transform 0.3s ease;
+}
+
+.polaroid-wrapper::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(60deg, transparent 38%, rgba(255, 255, 255, 0.4) 50%, transparent 62%);
+  transform: translateX(-100%);
+  transition: transform 0.65s ease;
+  pointer-events: none;
+}
+
+.polaroid-card-item:hover .polaroid-wrapper::after {
+  transform: translateX(100%);
 }
 
 .polaroid-card-item:hover .polaroid-wrapper {
-  filter: drop-shadow(0 16px 30px rgba(0, 0, 0, 0.85)) drop-shadow(0 0 18px rgba(255, 42, 109, 0.5));
+  filter: drop-shadow(0 18px 32px rgba(0, 0, 0, 0.88)) drop-shadow(0 0 20px rgba(255, 42, 109, 0.6));
 }
 
 .polaroid-img {
@@ -775,6 +852,18 @@ html, body {
   height: 68px;
   filter: drop-shadow(0 0 12px rgba(255, 42, 109, 0.7));
   animation: floatSlow 4s ease-in-out infinite;
+  cursor: pointer;
+  transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.3s ease;
+  z-index: 20;
+}
+
+.envelope-decoration:hover {
+  transform: scale(1.22) rotate(-8deg);
+  filter: drop-shadow(0 0 22px rgba(255, 42, 109, 1)) drop-shadow(0 0 35px #ffd166);
+}
+
+.envelope-decoration:active {
+  transform: scale(0.95);
 }
 
 .quill-decoration {
@@ -785,6 +874,18 @@ html, body {
   height: 75px;
   filter: drop-shadow(0 0 12px rgba(255, 42, 109, 0.7));
   animation: floatReverse 4.5s ease-in-out infinite;
+  cursor: pointer;
+  transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.3s ease;
+  z-index: 20;
+}
+
+.quill-decoration:hover {
+  transform: scale(1.2) rotate(14deg);
+  filter: drop-shadow(0 0 22px rgba(255, 120, 180, 1)) drop-shadow(0 0 30px #ff2a6d);
+}
+
+.quill-decoration:active {
+  transform: scale(0.95) rotate(-5deg);
 }
 
 /* ===================================================
@@ -826,7 +927,14 @@ html, body {
   margin: 10px 0 20px;
 }
 
-/* Floating 3D Metallic Heart Balloons */
+/* Floating 3D Metallic Heart Balloons (Interactive) */
+.balloon-left, .balloon-right, .balloon-screen2-left, .balloon-screen2-right {
+  cursor: pointer;
+  pointer-events: auto;
+  transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.3s ease;
+  will-change: transform;
+}
+
 .balloon-left {
   position: absolute;
   left: -10px;
@@ -834,7 +942,6 @@ html, body {
   width: 80px;
   filter: drop-shadow(0 0 20px rgba(255, 42, 109, 0.6));
   animation: balloonDriftLeft 4s ease-in-out infinite;
-  pointer-events: none;
 }
 
 .balloon-right {
@@ -844,7 +951,40 @@ html, body {
   width: 85px;
   filter: drop-shadow(0 0 20px rgba(255, 42, 109, 0.6));
   animation: balloonDriftRight 4.5s ease-in-out infinite;
-  pointer-events: none;
+}
+
+.balloon-screen2-left {
+  position: absolute;
+  left: -15px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 75px;
+  filter: drop-shadow(0 0 18px rgba(255, 42, 109, 0.55));
+  animation: balloonDriftLeft 4.2s ease-in-out infinite;
+}
+
+.balloon-screen2-right {
+  position: absolute;
+  right: -15px;
+  top: 45%;
+  transform: translateY(-50%);
+  width: 78px;
+  filter: drop-shadow(0 0 18px rgba(255, 42, 109, 0.55));
+  animation: balloonDriftRight 4.6s ease-in-out infinite;
+}
+
+.balloon-left:hover, .balloon-right:hover, .balloon-screen2-left:hover, .balloon-screen2-right:hover {
+  transform: scale(1.18);
+  filter: drop-shadow(0 0 30px rgba(255, 42, 109, 1)) drop-shadow(0 0 45px #ffd166);
+}
+
+.balloon-left:active, .balloon-right:active, .balloon-screen2-left:active, .balloon-screen2-right:active {
+  transform: scale(0.92);
+}
+
+.balloon-popped {
+  animation: balloonPopOut 0.35s ease-out forwards !important;
+  pointer-events: none !important;
 }
 
 /* Birthday Cake Interactive Container */
@@ -854,11 +994,11 @@ html, body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  transition: transform 0.3s ease;
+  transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .cake-container:hover {
-  transform: scale(1.03);
+  transform: scale(1.05);
 }
 
 .cake-img {
@@ -882,13 +1022,27 @@ html, body {
 
 .candle-flame {
   width: 14px;
-  height: 22px;
-  background: radial-gradient(ellipse at 50% 80%, #ffffff 0%, #ffea00 35%, #ff5500 70%, transparent 100%);
+  height: 24px;
+  background: radial-gradient(ellipse at 50% 80%, #ffffff 0%, #ffea00 30%, #ff5500 70%, transparent 100%);
   border-radius: 50% 50% 25% 25% / 60% 60% 40% 40%;
-  animation: flameFlicker 0.6s infinite ease-in-out;
+  animation: flameRealisticFlicker 0.65s infinite ease-in-out;
   cursor: pointer;
   transition: opacity 0.3s ease;
   pointer-events: auto;
+  position: relative;
+}
+
+.candle-flame::after {
+  content: '';
+  position: absolute;
+  bottom: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 5px;
+  height: 9px;
+  background: radial-gradient(ellipse at 50% 80%, #ffffff 0%, #00e5ff 60%, transparent 100%);
+  border-radius: 50%;
+  opacity: 0.85;
 }
 
 .candle-flame.blown-out {

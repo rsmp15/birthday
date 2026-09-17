@@ -61,7 +61,7 @@
       <h1 class="screen-title">Access Our World</h1>
       <p class="screen-subtitle">A special place, just for you ❤️</p>
 
-      <div id="lockCard" class="lock-card">
+      <div id="lockCard" class="lock-card card-tilt-target">
         <!-- Name Input -->
         <div class="input-group">
           <span class="input-icon">👤</span>
@@ -88,6 +88,30 @@
          SCREEN 2: HAPPY BIRTHDAY GREETING & CONFETTI
          ======================================================== -->
     <section id="screen2" class="screen">
+      <!-- Floating Metallic Balloons on Screen 2 -->
+      <div class="balloon-screen2-left" id="balloonS2Left" title="Click to pop me! 🎈">
+        <svg viewBox="0 0 100 120" width="100%">
+          <defs>
+            <radialGradient id="balloonGradS2L" cx="35%" cy="30%" r="70%">
+              <stop offset="0%" stop-color="#ff9ebb" />
+              <stop offset="40%" stop-color="#ff2a6d" />
+              <stop offset="100%" stop-color="#800b30" />
+            </radialGradient>
+          </defs>
+          <path d="M50 90 C50 90 10 65 10 35 C10 15 25 5 45 5 C50 5 50 12 50 12 C50 12 50 5 55 5 C75 5 90 15 90 35 C90 65 50 90 50 90 Z" fill="url(#balloonGradS2L)" />
+          <ellipse cx="38" cy="24" rx="10" ry="5" fill="#ffffff" opacity="0.6" transform="rotate(-30 38 24)" />
+          <path d="M50 90 Q48 105 52 120" fill="none" stroke="rgba(255, 120, 160, 0.6)" stroke-width="1.5" />
+        </svg>
+      </div>
+
+      <div class="balloon-screen2-right" id="balloonS2Right" title="Click to pop me! 🎈">
+        <svg viewBox="0 0 100 120" width="100%">
+          <path d="M50 90 C50 90 10 65 10 35 C10 15 25 5 45 5 C50 5 50 12 50 12 C50 12 50 5 55 5 C75 5 90 15 90 35 C90 65 50 90 50 90 Z" fill="url(#balloonGradS2L)" />
+          <ellipse cx="38" cy="24" rx="10" ry="5" fill="#ffffff" opacity="0.6" transform="rotate(-30 38 24)" />
+          <path d="M50 90 Q52 105 48 120" fill="none" stroke="rgba(255, 120, 160, 0.6)" stroke-width="1.5" />
+        </svg>
+      </div>
+
       <div class="birthday-header">
         <h2 class="happy-title">Happy</h2>
         <div class="birthday-script">Birthday</div>
@@ -126,7 +150,7 @@
       </div>
 
       <!-- 3D InfiniteMenu Container -->
-      <div id="infiniteMenuSection" class="infinite-menu-section active" style="width: 100%; max-width: 600px; height: 460px; margin: 0 auto 20px;">
+      <div id="infiniteMenuSection" class="infinite-menu-section active card-tilt-target" style="width: 100%; max-width: 600px; height: 460px; margin: 0 auto 20px;">
         <div id="infiniteMenuContainer" style="width: 100%; height: 100%; position: relative;"></div>
       </div>
 
@@ -145,7 +169,7 @@
       <h2 class="letter-screen-title">💕 A Letter From Kamali 💕</h2>
       <p class="letter-screen-subtitle">Written with all my heart</p>
 
-      <div class="letter-parchment-card">
+      <div class="letter-parchment-card card-tilt-target" id="letterCard">
         <span class="letter-ornament-tl">❦</span>
         <span class="letter-ornament-tr">❦</span>
 
@@ -164,7 +188,7 @@
         </div>
 
         <!-- Glowing Pink Envelope on bottom-left -->
-        <div class="envelope-decoration">
+        <div class="envelope-decoration" id="envelopeDecor" title="Click to open letter! 💌">
           <svg viewBox="0 0 100 100" width="100%" height="100%">
             <defs>
               <linearGradient id="envGrad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -180,7 +204,7 @@
         </div>
 
         <!-- Glowing Pink Quill on bottom-right -->
-        <div class="quill-decoration">
+        <div class="quill-decoration" id="quillDecor" title="Kamali's love quill ✨">
           <svg viewBox="0 0 100 100" width="100%" height="100%">
             <defs>
               <linearGradient id="quillGrad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -214,9 +238,9 @@
       </div>
 
       <!-- Stage with Cake & Metallic Balloons -->
-      <div class="cake-stage">
+      <div class="cake-stage card-tilt-target">
         <!-- Floating Left Balloon -->
-        <div class="balloon-left">
+        <div class="balloon-left" id="balloonS5Left" title="Click to pop me! 🎈">
           <svg viewBox="0 0 100 120" width="100%">
             <defs>
               <radialGradient id="balloonGrad" cx="35%" cy="30%" r="70%">
@@ -233,7 +257,7 @@
         </div>
 
         <!-- Floating Right Balloon -->
-        <div class="balloon-right">
+        <div class="balloon-right" id="balloonS5Right" title="Click to pop me! 🎈">
           <svg viewBox="0 0 100 120" width="100%">
             <path d="M50 90 C50 90 10 65 10 35 C10 15 25 5 45 5 C50 5 50 12 50 12 C50 12 50 5 55 5 C75 5 90 15 90 35 C90 65 50 90 50 90 Z" fill="url(#balloonGrad)" />
             <ellipse cx="38" cy="24" rx="10" ry="5" fill="#ffffff" opacity="0.6" transform="rotate(-30 38 24)" />

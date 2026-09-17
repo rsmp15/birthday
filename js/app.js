@@ -243,7 +243,7 @@ class BirthdayApp {
 
     const tryUnlock = () => {
       const entered = passInput ? passInput.value.trim() : '';
-      const validPasscodes = [this.config.passcode, '22', '2208', '22/08', 'thraveen'];
+      const validPasscodes = [this.config.passcode, '2019', '19', 'yashu'];
 
       // Allow if matches or if empty with gentle unlock
       if (validPasscodes.includes(entered.toLowerCase()) || entered === '') {

@@ -1,11 +1,11 @@
 // Website Configuration
 // You can edit any details below to customize the website!
 export const config = {
-  recipientName: "Thraveen",
+  recipientName: "Yashu",
   senderName: "Kamali",
   birthdayDate: "22 August",
-  passcode: "2208", // Can be '2208', '22', or any 4-digit PIN
-  passcodeHint: "Hint: Birthday Date (DDMM) - 22 August ❤️",
+  passcode: "2019", // Passcode 2019
+  passcodeHint: "Hint: Passcode is 2019 ❤️",
 
   // Music configuration
   music: {
@@ -73,7 +73,7 @@ export const config = {
   // Screen 5 letter
   letter: {
     salutation: "To the most amazing person in my life,",
-    name: "Thraveen,",
+    name: "Yashu,",
     paragraphs: [
       "You make every day brighter just by being you.",
       "Thank you for your love, your kindness and for being my constant happiness.",
@@ -115,7 +115,7 @@ export const config = {
       },
       always: {
         title: "My Eternal Promise ✨",
-        content: "I promise to stand beside you, to celebrate your victories, comfort you in hard times, laugh at your jokes, and love you more with every passing sunrise. Happy Birthday, Thraveen!"
+        content: "I promise to stand beside you, to celebrate your victories, comfort you in hard times, laugh at your jokes, and love you more with every passing sunrise. Happy Birthday, Yashu!"
       }
     }
   }

@@ -1,0 +1,182 @@
+/* InfiniteMenu Component Styles */
+
+.infinite-menu-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), inset 0 0 20px rgba(255, 42, 109, 0.15);
+  border: 1px solid rgba(255, 80, 140, 0.25);
+  background: rgba(18, 5, 14, 0.55);
+  backdrop-filter: blur(16px);
+}
+
+#infinite-grid-menu-canvas {
+  cursor: grab;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+  outline: none;
+  display: block;
+}
+
+#infinite-grid-menu-canvas:active {
+  cursor: grabbing;
+}
+
+.action-button {
+  position: absolute;
+  left: 50%;
+  z-index: 10;
+  width: 56px;
+  height: 56px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, #ff2a6d 0%, #d81b60 100%);
+  border: 4px solid var(--infinite-menu-background, #16050e);
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 0 25px rgba(255, 42, 109, 0.7);
+  transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.action-button:hover {
+  transform: translateX(-50%) scale(1.15) !important;
+  background: linear-gradient(135deg, #ff4b82 0%, #e91e63 100%);
+  box-shadow: 0 0 35px rgba(255, 42, 109, 0.9);
+}
+
+.action-button-icon {
+  user-select: none;
+  position: relative;
+  color: #fff;
+  top: 1px;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.face-title {
+  user-select: none;
+  position: absolute;
+  font-family: var(--font-serif, 'Playfair Display', serif);
+  font-weight: 700;
+  font-size: 1.85rem;
+  left: 24px;
+  top: 50%;
+  color: #ffffff;
+  text-shadow: 0 0 15px rgba(255, 42, 109, 0.7);
+  letter-spacing: 0.5px;
+  z-index: 5;
+  pointer-events: none;
+  max-width: 220px;
+}
+
+.face-title.active {
+  opacity: 1;
+  transform: translateY(-50%);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.face-title.inactive {
+  opacity: 0;
+  transform: translateY(-40%);
+  transition: opacity 0.15s ease;
+}
+
+.face-description {
+  user-select: none;
+  position: absolute;
+  right: 24px;
+  top: 50%;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #ffd1dc;
+  text-shadow: 0 0 8px rgba(0, 0, 0, 0.8);
+  max-width: 220px;
+  text-align: right;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.face-description.active {
+  opacity: 1;
+  transform: translateY(-50%);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.face-description.inactive {
+  opacity: 0;
+  transform: translateY(-40%);
+  transition: opacity 0.15s ease;
+}
+
+.action-button.active {
+  bottom: 24px;
+  transform: translateX(-50%) scale(1);
+  opacity: 1;
+  pointer-events: auto;
+  transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.action-button.inactive {
+  bottom: -60px;
+  transform: translateX(-50%) scale(0);
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.15s ease;
+}
+
+/* 3D Spin Hint Badge */
+.infinite-menu-hint {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+  font-size: 0.8rem;
+  color: #ff9ebb;
+  background: rgba(30, 8, 20, 0.7);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 80, 140, 0.35);
+  padding: 4px 14px;
+  border-radius: 20px;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  letter-spacing: 0.3px;
+}
+
+/* Responsive design for phones and tablets */
+@media (max-width: 768px) {
+  .face-title {
+    top: 52px;
+    left: 16px;
+    font-size: 1.35rem;
+    transform: none;
+  }
+  .face-title.active {
+    transform: none;
+  }
+  .face-description {
+    bottom: 84px;
+    top: auto;
+    right: auto;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    max-width: 90%;
+    font-size: 0.88rem;
+  }
+  .face-description.active {
+    transform: translateX(-50%);
+  }
+  .face-description.inactive {
+    transform: translateX(-50%) translateY(10px);
+  }
+  .action-button.active {
+    bottom: 16px;
+  }
+}

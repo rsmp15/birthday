@@ -21,53 +21,54 @@ export const config = {
     buttonText: "Unfold Love 💖"
   },
 
-  // Screen 3 polaroid memories
+  // Screen 3 polaroid memories (using real WhatsApp couple photos)
   memories: [
     {
       id: 1,
-      image: "assets/extracted/polaroid_card_1.png",
-      fullPhoto: "assets/extracted/photo1.png",
+      image: "assets/extracted/mem1_polaroid.jpg",
+      fullPhoto: "assets/extracted/WhatsApp Image 2026-09-16 at 9.14.24 PM (1).jpeg",
       caption: "Our Smile",
       rotation: -3,
-      date: "The Day We Began",
+      date: "Forever With You",
       note: "Every time you look at me with that radiant smile, my entire world lights up. You make every ordinary moment feel completely extraordinary."
     },
     {
       id: 2,
-      image: "assets/extracted/polaroid_card_2.png",
-      fullPhoto: "assets/extracted/photo2.png",
-      caption: "Our Favorite Moment",
+      image: "assets/extracted/mem2_polaroid.jpg",
+      fullPhoto: "assets/extracted/WhatsApp Image 2026-09-16 at 9.14.24 PM.jpeg",
+      caption: "Holding Hands",
       rotation: 2,
-      date: "Under The Sunset",
-      note: "This evening will forever be locked in my heart. Just you and me, the warm breeze, and conversations that felt like poetry."
+      date: "In Your Hands",
+      note: "Holding your hand and walking through life with you is my absolute favorite feeling. In your grip, I find all the strength and comfort I need."
     },
     {
       id: 3,
-      image: "assets/extracted/polaroid_card_3.png",
-      fullPhoto: "assets/extracted/photo3.png",
+      image: "assets/extracted/mem3_polaroid.jpg",
+      fullPhoto: "assets/extracted/WhatsApp Image 2026-09-16 at 9.14.25 PM.jpeg",
       caption: "Together Forever",
       rotation: -2,
-      date: "Our Quiet Adventures",
-      note: "Holding your hand and walking through life with you is my absolute favorite adventure. No matter where we go, with you is home."
+      date: "Floating In Love",
+      note: "With you, my heart feels lighter than air. No matter where life takes us, my heart will always choose you over and over again."
     },
     {
       id: 4,
-      image: "assets/extracted/polaroid_card_4.png",
-      fullPhoto: "assets/extracted/photo4.png",
-      caption: "My Happy Place",
+      image: "assets/extracted/mem4_polaroid.jpg",
+      fullPhoto: "assets/extracted/WhatsApp Image 2026-09-16 at 9.14.25 PM (1).jpeg",
+      caption: "Sweet Kisses",
       rotation: 3,
-      date: "In Your Arms",
+      date: "Playful Moments",
+      note: "All the laughter, the playful jokes, and the endless silly moments we share are what make our love so pure and irreplaceable."
+    },
+    {
+      id: 5,
+      image: "assets/extracted/mem5_polaroid.jpg",
+      fullPhoto: "assets/extracted/WhatsApp Image 2026-09-16 at 9.14.23 PM.jpeg",
+      caption: "My Happy Place",
+      rotation: -2,
+      date: "Warmth & Peace",
       note: "Right here, wrapped in your warmth and love, is where I am happiest and most at peace. Happy Birthday to the love of my life!"
     }
   ],
-
-  // Screen 4 special video
-  video: {
-    title: "Our Special Video",
-    thumbnail: "assets/extracted/video_preview.png",
-    durationText: "02:45",
-    videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-silhouette-of-a-couple-at-sunset-40294-large.mp4"
-  },
 
   // Screen 5 letter
   letter: {

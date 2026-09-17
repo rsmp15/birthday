@@ -113,52 +113,35 @@
     </section>
 
     <!-- ========================================================
-         SCREEN 3: OUR PRECIOUS MEMORIES (POLAROID GALLERY)
+         SCREEN 3: OUR PRECIOUS MEMORIES (3D INFINITE MENU + POLAROIDS)
          ======================================================== -->
     <section id="screen3" class="screen">
       <h2 class="memories-title">✨ Our Precious Memories ✨</h2>
-      <p class="memories-subtitle">Moments that mean everything</p>
+      <p class="memories-subtitle">Drag & spin our memories in 3D</p>
 
-      <!-- Polaroid Cards Container -->
-      <div id="polaroidGallery" class="polaroid-gallery">
+      <!-- View Switcher Tabs -->
+      <div class="view-mode-tabs">
+        <button id="view3dBtn" class="mode-tab-btn active">🌐 3D Photo Sphere</button>
+        <button id="viewPolaroidBtn" class="mode-tab-btn">📷 Polaroid Cards</button>
+      </div>
+
+      <!-- 3D InfiniteMenu Container -->
+      <div id="infiniteMenuSection" class="infinite-menu-section active" style="width: 100%; max-width: 600px; height: 460px; margin: 0 auto 20px;">
+        <div id="infiniteMenuContainer" style="width: 100%; height: 100%; position: relative;"></div>
+      </div>
+
+      <!-- Polaroid Cards Container (alternate view) -->
+      <div id="polaroidGallery" class="polaroid-gallery" style="display: none;">
         <!-- Dynamically populated from config.memories -->
       </div>
 
-      <button id="playMovieBtn" class="btn-primary" style="max-width: 220px;">Play My Movie 🎬</button>
+      <button id="toLetterBtn" class="btn-primary" style="max-width: 220px; margin-top: 10px;">Open Love Letter 💌</button>
     </section>
 
     <!-- ========================================================
-         SCREEN 4: OUR SPECIAL VIDEO
+         SCREEN 4: A LETTER FROM KAMALI
          ======================================================== -->
     <section id="screen4" class="screen">
-      <h2 class="video-screen-title">💕 Our Special Video 💕</h2>
-
-      <div class="video-player-card">
-        <div id="videoContainer" class="video-container">
-          <video id="specialVideo" preload="metadata" poster="assets/extracted/video_preview.png" playsinline loop>
-            <source src="https://assets.mixkit.co/videos/preview/mixkit-silhouette-of-a-couple-at-sunset-40294-large.mp4" type="video/mp4" />
-          </video>
-          <div id="videoPlayOverlay" class="video-overlay-play">▶</div>
-        </div>
-
-        <!-- Romantic Custom Controls -->
-        <div class="video-controls">
-          <button id="videoToggleBtn" class="video-btn" aria-label="Play/Pause">▶</button>
-          <div id="videoTime" class="video-time">00:00 / 02:45</div>
-          <div id="videoProgressBar" class="video-progress-bar">
-            <div id="videoProgressFilled" class="video-progress-filled"></div>
-          </div>
-          <button id="videoFullscreenBtn" class="video-btn" aria-label="Full Screen">⛶</button>
-        </div>
-      </div>
-
-      <button id="finalSurpriseBtn" class="btn-primary" style="max-width: 210px;">Final Surprise 💖</button>
-    </section>
-
-    <!-- ========================================================
-         SCREEN 5: A LETTER FROM KAMALI
-         ======================================================== -->
-    <section id="screen5" class="screen">
       <h2 class="letter-screen-title">💕 A Letter From Kamali 💕</h2>
       <p class="letter-screen-subtitle">Written with all my heart</p>
 
@@ -213,13 +196,13 @@
         </div>
       </div>
 
-      <button id="toScreen6Btn" class="btn-primary" style="max-width: 250px;">Make A Wish & Cut Cake 🎂✨</button>
+      <button id="toScreen5Btn" class="btn-primary" style="max-width: 250px;">Make A Wish & Cut Cake 🎂✨</button>
     </section>
 
     <!-- ========================================================
-         SCREEN 6: GRAND FINALE - CAKE, CANDLE & FIREWORKS
+         SCREEN 5: GRAND FINALE - CAKE, CANDLE & FIREWORKS
          ======================================================== -->
-    <section id="screen6" class="screen">
+    <section id="screen5" class="screen">
       <div class="finale-header">
         <h2 class="finale-title">Happy Birthday,</h2>
         <div class="finale-name-row">
@@ -316,9 +299,8 @@ Forever yours, Kamali ❤️</p>
     <div class="step-dot active" data-step="1" title="Lock Screen"></div>
     <div class="step-dot" data-step="2" title="Birthday Wish"></div>
     <div class="step-dot" data-step="3" title="Our Memories"></div>
-    <div class="step-dot" data-step="4" title="Special Video"></div>
-    <div class="step-dot" data-step="5" title="Love Letter"></div>
-    <div class="step-dot" data-step="6" title="Cake & Celebration"></div>
+    <div class="step-dot" data-step="4" title="Love Letter"></div>
+    <div class="step-dot" data-step="5" title="Cake & Celebration"></div>
   </footer>
 
   <!-- Lightbox Modal for Polaroids -->

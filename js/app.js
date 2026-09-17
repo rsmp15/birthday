@@ -2,12 +2,13 @@
 import { config } from './config.js';
 import ParticleEngine from './particles.js';
 import { SoundManager } from './audio.js';
+import { mountInfiniteMenu } from '../src/mountInfiniteMenu.jsx';
 
 class BirthdayApp {
   constructor() {
     this.config = config;
     this.currentScreen = 1;
-    this.totalScreens = 6;
+    this.totalScreens = 5;
     this.particles = new ParticleEngine('particlesCanvas');
     this.sound = new SoundManager(config);
     this.candleBlown = false;
@@ -22,7 +23,6 @@ class BirthdayApp {
     this.initScreen3();
     this.initScreen4();
     this.initScreen5();
-    this.initScreen6();
     this.initModals();
     this.updateScreen(1);
   }
@@ -82,7 +82,14 @@ class BirthdayApp {
       this.particles.stopConfetti();
     }
 
-    if (step === 6 && this.candleBlown) {
+    if (step === 3) {
+      // Trigger resize so WebGL canvas fits container dimensions
+      setTimeout(() => {
+        window.dispatchEvent(new Event('resize'));
+      }, 100);
+    }
+
+    if (step === 5 && this.candleBlown) {
       this.particles.triggerFireworks();
     }
 
@@ -172,15 +179,38 @@ class BirthdayApp {
   }
 
   // ==========================================
-  // Screen 3: Polaroid Gallery & Lightbox
+  // Screen 3: 3D InfiniteMenu + Polaroid Gallery
   // ==========================================
   initScreen3() {
-    const gallery = document.getElementById('polaroidGallery');
-    const playMovieBtn = document.getElementById('playMovieBtn');
+    const toLetterBtn = document.getElementById('toLetterBtn');
+    const view3dBtn = document.getElementById('view3dBtn');
+    const viewPolaroidBtn = document.getElementById('viewPolaroidBtn');
+    const infiniteSection = document.getElementById('infiniteMenuSection');
+    const polaroidGallery = document.getElementById('polaroidGallery');
 
-    if (gallery && this.config.memories) {
-      gallery.innerHTML = '';
-      this.config.memories.forEach((mem, index) => {
+    // 1. Mount 3D InfiniteMenu from React Bits
+    if (this.config.memories && this.config.memories.length > 0) {
+      const menuItems = this.config.memories.map(mem => ({
+        image: mem.image,
+        title: mem.caption,
+        description: mem.note.length > 60 ? mem.note.substring(0, 58) + '...' : mem.note,
+        fullPhoto: mem.fullPhoto,
+        date: mem.date,
+        note: mem.note,
+        caption: mem.caption,
+        link: '#'
+      }));
+
+      mountInfiniteMenu('infiniteMenuContainer', menuItems, (item) => {
+        this.sound.playClickSound();
+        this.openLightbox(item);
+      });
+    }
+
+    // 2. Render Polaroid Cards as alternate view
+    if (polaroidGallery && this.config.memories) {
+      polaroidGallery.innerHTML = '';
+      this.config.memories.forEach((mem) => {
         const card = document.createElement('div');
         card.className = 'polaroid-card-item';
         card.style.transform = `rotate(${mem.rotation || 0}deg)`;
@@ -197,12 +227,33 @@ class BirthdayApp {
           this.openLightbox(mem);
         });
 
-        gallery.appendChild(card);
+        polaroidGallery.appendChild(card);
       });
     }
 
-    if (playMovieBtn) {
-      playMovieBtn.addEventListener('click', () => {
+    // 3. Tab buttons to toggle between 3D Sphere and Polaroids
+    if (view3dBtn && viewPolaroidBtn) {
+      view3dBtn.addEventListener('click', () => {
+        this.sound.playClickSound();
+        view3dBtn.classList.add('active');
+        viewPolaroidBtn.classList.remove('active');
+        if (infiniteSection) infiniteSection.style.display = 'block';
+        if (polaroidGallery) polaroidGallery.style.display = 'none';
+        window.dispatchEvent(new Event('resize'));
+      });
+
+      viewPolaroidBtn.addEventListener('click', () => {
+        this.sound.playClickSound();
+        viewPolaroidBtn.classList.add('active');
+        view3dBtn.classList.remove('active');
+        if (infiniteSection) infiniteSection.style.display = 'none';
+        if (polaroidGallery) polaroidGallery.style.display = 'flex';
+      });
+    }
+
+    // 4. Button to open letter (Screen 4)
+    if (toLetterBtn) {
+      toLetterBtn.addEventListener('click', () => {
         this.sound.playClickSound();
         this.updateScreen(4);
       });
@@ -217,88 +268,20 @@ class BirthdayApp {
     const note = document.getElementById('lightboxNote');
 
     if (img) img.src = memory.fullPhoto || memory.image;
-    if (caption) caption.textContent = memory.caption;
+    if (caption) caption.textContent = memory.caption || memory.title;
     if (date) date.textContent = memory.date || 'Sweet Memory';
-    if (note) note.textContent = memory.note || '';
+    if (note) note.textContent = memory.note || memory.description || '';
 
     if (modal) modal.classList.add('active');
   }
 
   // ==========================================
-  // Screen 4: Special Video
+  // Screen 4: Love Letter
   // ==========================================
   initScreen4() {
-    const video = document.getElementById('specialVideo');
-    const container = document.getElementById('videoContainer');
-    const playOverlay = document.getElementById('videoPlayOverlay');
-    const toggleBtn = document.getElementById('videoToggleBtn');
-    const timeDisplay = document.getElementById('videoTime');
-    const progressBar = document.getElementById('videoProgressBar');
-    const progressFilled = document.getElementById('videoProgressFilled');
-    const fullscreenBtn = document.getElementById('videoFullscreenBtn');
-    const finalSurpriseBtn = document.getElementById('finalSurpriseBtn');
-
-    const togglePlay = () => {
-      if (!video) return;
-      if (video.paused) {
-        video.play();
-        if (container) container.classList.add('is-playing');
-        if (toggleBtn) toggleBtn.innerHTML = '⏸';
-      } else {
-        video.pause();
-        if (container) container.classList.remove('is-playing');
-        if (toggleBtn) toggleBtn.innerHTML = '▶';
-      }
-    };
-
-    if (container) container.addEventListener('click', togglePlay);
-    if (toggleBtn) toggleBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      togglePlay();
-    });
-
-    if (video) {
-      video.addEventListener('timeupdate', () => {
-        if (!video.duration) return;
-        const progress = (video.currentTime / video.duration) * 100;
-        if (progressFilled) progressFilled.style.width = `${progress}%`;
-
-        const curMin = Math.floor(video.currentTime / 60);
-        const curSec = Math.floor(video.currentTime % 60).toString().padStart(2, '0');
-        const durMin = Math.floor(video.duration / 60);
-        const durSec = Math.floor(video.duration % 60).toString().padStart(2, '0');
-        if (timeDisplay) timeDisplay.textContent = `${curMin}:${curSec} / ${durMin}:${durSec}`;
-      });
-
-      video.addEventListener('ended', () => {
-        if (container) container.classList.remove('is-playing');
-        if (toggleBtn) toggleBtn.innerHTML = '▶';
-      });
-    }
-
-    if (progressBar && video) {
-      progressBar.addEventListener('click', (e) => {
-        const rect = progressBar.getBoundingClientRect();
-        const pos = (e.clientX - rect.left) / rect.width;
-        if (video.duration) {
-          video.currentTime = pos * video.duration;
-        }
-      });
-    }
-
-    if (fullscreenBtn && container) {
-      fullscreenBtn.addEventListener('click', () => {
-        if (container.requestFullscreen) {
-          container.requestFullscreen();
-        } else if (container.webkitRequestFullscreen) {
-          container.webkitRequestFullscreen();
-        }
-      });
-    }
-
-    if (finalSurpriseBtn) {
-      finalSurpriseBtn.addEventListener('click', () => {
-        if (video && !video.paused) video.pause();
+    const toScreen5Btn = document.getElementById('toScreen5Btn');
+    if (toScreen5Btn) {
+      toScreen5Btn.addEventListener('click', () => {
         this.sound.playClickSound();
         this.updateScreen(5);
       });
@@ -306,27 +289,14 @@ class BirthdayApp {
   }
 
   // ==========================================
-  // Screen 5: Love Letter
+  // Screen 5: Grand Finale Cake & Fireworks
   // ==========================================
   initScreen5() {
-    const toScreen6Btn = document.getElementById('toScreen6Btn');
-    if (toScreen6Btn) {
-      toScreen6Btn.addEventListener('click', () => {
-        this.sound.playClickSound();
-        this.updateScreen(6);
-      });
-    }
-  }
-
-  // ==========================================
-  // Screen 6: Grand Finale Cake & Fireworks
-  // ==========================================
-  initScreen6() {
     const cakeContainer = document.getElementById('cakeContainer');
     const candleFlame = document.getElementById('candleFlame');
     const candleHint = document.getElementById('candleHint');
 
-    const blowCandle = (e) => {
+    const blowCandle = () => {
       if (this.candleBlown) return;
       this.candleBlown = true;
 

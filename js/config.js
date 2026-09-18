@@ -2,7 +2,7 @@
 // You can edit any details below to customize the website!
 export const config = {
   recipientName: "Yashu",
-  senderName: "Kamali",
+  senderName: "Om",
   birthdayDate: "22 August",
   passcode: "2019", // Passcode 2019
   passcodeHint: "Hint: Passcode is 2019 ❤️",
@@ -82,12 +82,12 @@ export const config = {
     ],
     closing: "Happy Birthday, my love! ❤️",
     signoff: "Forever yours,",
-    author: "Kamali"
+    author: "Om"
   },
 
   // Screen 6 cake and celebration
   finale: {
-    message: "Thank you for being my happiness,\nmy love and my everything.\nForever yours, Kamali ❤️",
+    message: "Thank you for being my happiness,\nmy love and my everything.\nForever yours, Om ❤️",
     modals: {
       story: {
         title: "Our Story 📖",

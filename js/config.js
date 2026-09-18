@@ -3,7 +3,7 @@
 export const config = {
   recipientName: "Yashu",
   senderName: "Om",
-  birthdayDate: "22 August",
+  birthdayDate: "20 August",
   passcode: "2019", // Passcode 2019
   passcodeHint: "Hint: Passcode is 2019 ❤️",
 

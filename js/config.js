@@ -3,15 +3,18 @@
 export const config = {
   recipientName: "Yashu",
   senderName: "Om",
-  birthdayDate: "20 August",
-  passcode: "2019", // Passcode 2019
-  passcodeHint: "Hint: Passcode is 2019 ❤️",
+  birthdayDate: "20 September",
+  passcode: "2009", // Birthday Date 20 Sept
+  passcodeHint: "Hint: Birthday Date (20 Sept) ❤️",
 
   // Music configuration
   music: {
-    title: "Romantic Birthday Melody",
-    // You can replace this with any audio file path or online MP3 URL:
-    url: "https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=romantic-love-112199.mp3",
+    title: "Tere Hawaale - Arijit Singh & Shilpa Rao",
+    url: "assets/audio/song.m4a",
+    sources: [
+      "assets/audio/song.m4a",
+      "assets/audio/song.webm"
+    ],
     autoplayOnUnlock: true
   },
 

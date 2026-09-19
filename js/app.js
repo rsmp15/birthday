@@ -243,10 +243,39 @@ class BirthdayApp {
 
     const tryUnlock = () => {
       const entered = passInput ? passInput.value.trim() : '';
-      const validPasscodes = [this.config.passcode, '2019', '19', 'yashu'];
 
-      // Allow if matches or if empty with gentle unlock
-      if (validPasscodes.includes(entered.toLowerCase()) || entered === '') {
+      // Do not unlock if passcode field is blank
+      if (!entered) {
+        if (lockCard) {
+          lockCard.classList.remove('shake');
+          void lockCard.offsetWidth; // trigger reflow
+          lockCard.classList.add('shake');
+        }
+        if (passHint) {
+          passHint.style.color = '#ff4b82';
+          passHint.textContent = 'Please enter the passcode! ' + (this.config.passcodeHint || '');
+        }
+        if (passInput) passInput.focus();
+        return;
+      }
+
+      const cleanEntered = entered.toLowerCase().replace(/[\/\.\-\s]/g, '');
+      const validPasscodes = [
+        this.config.passcode,
+        '2009',
+        '20/09',
+        '20-09',
+        '20.09',
+        '20sept',
+        '20september',
+        '2019',
+        '19',
+        '20',
+        'yashu',
+        'kamali'
+      ].map(p => (p || '').toLowerCase().replace(/[\/\.\-\s]/g, ''));
+
+      if (validPasscodes.includes(cleanEntered)) {
         if (padlock) {
           padlock.classList.add('unlocking');
           const rect = padlock.getBoundingClientRect();
@@ -274,6 +303,7 @@ class BirthdayApp {
           passHint.style.color = '#ff4b82';
           passHint.textContent = 'Incorrect passcode! ' + this.config.passcodeHint;
         }
+        if (passInput) passInput.select();
       }
     };
 
@@ -291,6 +321,11 @@ class BirthdayApp {
   // Screen 2: Birthday Greeting
   // ==========================================
   initScreen2() {
+    const dateBadge = document.querySelector('.birthday-date-badge');
+    if (dateBadge && this.config.birthdayDate) {
+      dateBadge.innerHTML = `<span>❤️</span><span>${this.config.birthdayDate}</span><span>❤️</span>`;
+    }
+
     const unfoldBtn = document.getElementById('unfoldLoveBtn');
     if (unfoldBtn) {
       unfoldBtn.addEventListener('click', () => {
@@ -596,5 +631,5 @@ class BirthdayApp {
 
 // Start app once DOM is loaded
 window.addEventListener('DOMContentLoaded', () => {
-  new BirthdayApp();
+  window.app = new BirthdayApp();
 });

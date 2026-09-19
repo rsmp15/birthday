@@ -6,9 +6,37 @@ export class SoundManager {
     this.audioContext = null;
     this.isPlayingMusic = false;
     this.audioElement = new Audio();
-    this.audioElement.src = config.music.url;
+    
+    // Select best supported audio format between m4a and webm
+    const sources = (config.music && config.music.sources) ? config.music.sources : [config.music.url];
+    let selectedSrc = config.music.url;
+    for (const src of sources) {
+      if (src.endsWith('.m4a') && this.audioElement.canPlayType('audio/mp4; codecs="mp4a.40.2"')) {
+        selectedSrc = src;
+        break;
+      }
+      if (src.endsWith('.webm') && this.audioElement.canPlayType('audio/webm; codecs="opus"')) {
+        selectedSrc = src;
+        break;
+      }
+    }
+    this.audioElement.src = selectedSrc;
     this.audioElement.loop = true;
     this.audioElement.volume = 0.55;
+
+    // Fallback if primary source encounters decode or loading error
+    this.audioElement.addEventListener('error', () => {
+      const fallback = sources.find(s => !this.audioElement.src.endsWith(s));
+      if (fallback) {
+        console.warn(`Audio playback error with ${this.audioElement.src}, trying fallback ${fallback}`);
+        this.audioElement.src = fallback;
+        if (this.isPlayingMusic) {
+          this.audioElement.play().catch(() => this.startSynthMelody());
+        }
+      } else {
+        this.startSynthMelody();
+      }
+    });
 
     // Synthetic music box fallback if external audio fails or is blocked
     this.isSynthPlaying = false;

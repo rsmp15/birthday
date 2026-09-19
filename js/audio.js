@@ -3,9 +3,11 @@
 export class SoundManager {
   constructor(config) {
     this.config = config;
+    this.startTime = (config.music && config.music.startTime) || 0;
     this.audioContext = null;
     this.isPlayingMusic = false;
     this.audioElement = new Audio();
+    this.audioElement.preload = 'auto';
     
     // Select best supported audio format between m4a and webm
     const sources = (config.music && config.music.sources) ? config.music.sources : [config.music.url];
@@ -21,8 +23,31 @@ export class SoundManager {
       }
     }
     this.audioElement.src = selectedSrc;
-    this.audioElement.loop = true;
     this.audioElement.volume = 0.55;
+
+    // Apply start time once metadata is ready
+    const applyStartTime = () => {
+      if (this.startTime > 0 && this.audioElement.currentTime < 1) {
+        try {
+          this.audioElement.currentTime = this.startTime;
+        } catch (e) {
+          console.warn("Could not seek to startTime", e);
+        }
+      }
+    };
+    this.audioElement.addEventListener('loadedmetadata', applyStartTime);
+    this.audioElement.addEventListener('canplay', applyStartTime);
+
+    // Loop back to startTime when song finishes instead of rewinding to 0:00
+    this.audioElement.loop = false;
+    this.audioElement.addEventListener('ended', () => {
+      if (this.startTime > 0) {
+        try {
+          this.audioElement.currentTime = this.startTime;
+        } catch (e) {}
+      }
+      this.audioElement.play().catch(() => {});
+    });
 
     // Fallback if primary source encounters decode or loading error
     this.audioElement.addEventListener('error', () => {
@@ -75,11 +100,23 @@ export class SoundManager {
     this.ensureContext();
     this.isPlayingMusic = true;
 
+    // Seek to startTime if starting or near beginning
+    if (this.startTime > 0 && this.audioElement.currentTime < 1) {
+      try {
+        this.audioElement.currentTime = this.startTime;
+      } catch (e) {}
+    }
+
     // Try playing external audio element
     const playPromise = this.audioElement.play();
     if (playPromise !== undefined) {
       playPromise
         .then(() => {
+          if (this.startTime > 0 && this.audioElement.currentTime < 1) {
+            try {
+              this.audioElement.currentTime = this.startTime;
+            } catch (e) {}
+          }
           this.isPlayingMusic = true;
           this.updateUi(true);
         })

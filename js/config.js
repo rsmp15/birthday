@@ -15,6 +15,7 @@ export const config = {
       "assets/audio/song.m4a",
       "assets/audio/song.webm"
     ],
+    startTime: 214, // Play from 3:34 (3 * 60 + 34 = 214s)
     autoplayOnUnlock: true
   },
 
